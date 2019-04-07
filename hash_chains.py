@@ -42,11 +42,16 @@ class LinkedList:
 class Query:
 
     def __init__(self, query):
+        self._valid_cmd = ['add', 'find', 'del', 'check']
         self.type = query[0]
-        if self.type == 'check':
-            self.ind = int(query[1])
+        if self.type in self._valid_cmd:
+            if self.type == 'check':
+                self.ind = int(query[1])
+            else:
+                self.s = query[1]
         else:
-            self.s = query[1]
+            self.type = None
+            self.s = None
 
 
 class QueryProcessor:
@@ -70,8 +75,20 @@ class QueryProcessor:
     def write_chain(self, chain):
         print(' '.join(chain))
 
-    def read_query(self):
-        return Query(input().split())
+    def read_query(self, test_num=None):
+        if test_num is None:
+            return Query(input().split())
+
+        if test_num == 1:
+            return Query('add Mathuba'.split())
+        elif test_num == 2:
+            return Query('find Mathuba'.split())
+        elif test_num == 3:
+            return Query('del Mathuba'.split())
+        elif test_num == 4:
+            return Query('check 4'.split())
+        else:
+            return Query('illegal commans'.split())
 
     def process_query(self, query):
         if query.type == "check":
@@ -95,7 +112,9 @@ class QueryProcessor:
     def process_queries(self):
         n = int(input())
         for i in range(n):
-            self.process_query(self.read_query())
+            self.read_query()  # should be deleted eventually
+            #self.process_query(self.read_query())
+
 
 if __name__ == '__main__':
     bucket_count = int(input())
