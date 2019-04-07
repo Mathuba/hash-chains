@@ -1,5 +1,44 @@
 # python3
 
+
+class ListNode:
+    def __init__(self, data=None, next=None):
+        self.data = data
+        self.next = next
+
+
+class LinkedList:
+    def __init__(self):
+        self.head = None
+
+    def prepend(self, value):
+        self.head = ListNode(data=value, next=self.head)
+
+    def find(self, value):
+        current = self.head
+        while current and current.data != value:
+            current = current.next
+        return current
+
+    def remove(self, value):
+        current = self.head
+        previous = None
+        while current and current.data != value:
+            previous = current
+            current = current.next
+        if previous is None:
+            self.head = current.next
+        elif current:
+            previous.next = current.next
+            current.next = None
+
+    def print_list(self):
+        current = self.head
+        while current:
+            print(current.data, end=' ')
+        print()
+
+
 class Query:
 
     def __init__(self, query):
