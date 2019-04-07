@@ -43,12 +43,17 @@ class Query:
 
     def __init__(self, query):
         self._valid_cmd = ['add', 'find', 'del', 'check']
-        self.type = query[0]
-        if self.type in self._valid_cmd:
-            if self.type == 'check':
-                self.ind = int(query[1])
+        if len(query) == 2:
+            self.type = query[0]
+            if self.type in self._valid_cmd and 0 < len(query[1]) <= 15 :
+                if self.type == 'check':
+                    self.ind = int(query[1])
+                else:
+                    if 0 < len(query[1]) <= 15:
+                        self.s = query[1]
             else:
-                self.s = query[1]
+                self.type = None
+                self.s = None
         else:
             self.type = None
             self.s = None
@@ -66,7 +71,12 @@ class QueryProcessor:
     def _hash_func(self, s):
         ans = 0
         for c in reversed(s):
-            ans = (ans * self._multiplier + ord(c)) % self._prime
+            if 'a' <= c <= 'z' or 'A' <= c <= 'Z':
+                a = ans * self._multiplier + ord(c)
+            else:
+                ans = None
+                return ans
+            ans = ((a % self._prime) + self._prime) % self._prime
         return ans % self.bucket_count
 
     def write_search_result(self, was_found):
@@ -80,13 +90,17 @@ class QueryProcessor:
             return Query(input().split())
 
         if test_num == 1:
-            return Query('add Mathuba'.split())
+            return Query('add MathubaMzwandil'.split())
         elif test_num == 2:
             return Query('find Mathuba'.split())
         elif test_num == 3:
             return Query('del Mathuba'.split())
         elif test_num == 4:
             return Query('check 4'.split())
+        elif test_num == 5:
+            return Query('add MathubaMzwandile'.split())
+        elif test_num == 6:
+            return Query('add'.split())
         else:
             return Query('illegal commans'.split())
 

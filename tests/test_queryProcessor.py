@@ -23,7 +23,7 @@ def test_elems_size(query_processor):
 def test_add_is_accepted(query_processor):
     add_cmd = query_processor.read_query(1)
     assert add_cmd.type == 'add'
-    assert add_cmd.s == 'Mathuba'
+    assert add_cmd.s == 'MathubaMzwandil'
 
 
 def test_find_is_accepted(query_processor):
@@ -45,6 +45,25 @@ def test_check_is_accepted(query_processor):
 
 
 def test_no_other_command_accepted(query_processor):
-    illegal_cmd = query_processor.read_query(5)
+    illegal_cmd = query_processor.read_query(6)
     assert illegal_cmd.type is None
     assert illegal_cmd.s is None
+
+
+def test_correct_word_length_accepted(query_processor):
+    long_string = query_processor.read_query(5)
+    # assert long_string.type is None
+    assert long_string.s is None
+
+
+def test_correct_hash_value_returned(query_processor):
+    assert query_processor._hash_func('Mathuba') == 2
+
+def test_correct_hash_value_two():
+    proc_two = QueryProcessor(41)
+    assert proc_two._hash_func('NLZLNyXoXoIC') == 15
+
+
+def test_special_characters_return_no_hash_value(query_processor):
+    assert query_processor._hash_func('Mathu(ba') is None
+
