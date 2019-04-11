@@ -75,7 +75,6 @@ class QueryProcessor:
 
     def __init__(self, bucket_count):
         self.bucket_count = bucket_count
-        # store all strings in one list
         self.elems = [None] * self.bucket_count
 
     def _hash_func(self, s):
