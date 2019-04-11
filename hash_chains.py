@@ -45,6 +45,7 @@ class LinkedList:
         current = self.head
         while current:
             print(current.data, end=' ')
+            current = current.next
         print()
 
 
@@ -118,18 +119,24 @@ class QueryProcessor:
             if del_list.size == 0 and self.elems[hash_value] is not None:
                 self.elems[hash_value] = None
 
-    def write_chain(self, chain):
-        print(' '.join(chain))
+    def write_chain(self, hash_val):
+        chain_list = self.elems[hash_val]
+        if chain_list is not None:
+            chain_list.print_list()
+        else:
+            print()
 
     def add_to_hash_table(self, q_string):
         hash_value = self._hash_func(q_string)
-        if not self.elems[hash_value]:
-            add_list = LinkedList()
-            add_list.prepend(q_string)
-            self.elems[hash_value] = add_list
-        else:
-            add_list = self.elems[hash_value]
-            add_list.prepend(q_string)
+        if self.elems[hash_value] is None:
+            new_list = LinkedList()
+            new_list.prepend(q_string)
+            self.elems[hash_value] = new_list
+            return
+        lst_exists = self.elems[hash_value]
+        if lst_exists.find(q_string) is None:
+            lst_exists.prepend(q_string)
+            self.elems[hash_value] = lst_exists
 
     def read_query(self, test_cmd=None):
         if test_cmd is None:
@@ -140,9 +147,8 @@ class QueryProcessor:
     def process_query(self, query):
         if query.type is not None:
             if query.type == "check":
-                # use reverse order, because we append strings to the end
-                self.write_chain(cur for cur in reversed(self.elems)
-                        if self._hash_func(cur) == query.ind)
+                if 0 <= query.ind <= self.bucket_count:
+                    self.write_chain(query.ind)
             else:
                 try:
                     ind = self.elems.index(query.s)
@@ -159,7 +165,6 @@ class QueryProcessor:
     def process_queries(self):
         n = int(input())
         for i in range(n):
-            # self.read_query()  # should be deleted eventually
             self.process_query(self.read_query())
 
 

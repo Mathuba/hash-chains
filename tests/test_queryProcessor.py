@@ -285,3 +285,102 @@ def test_del_for_invalid_string(query_processor):
     assert add_node.data == 'cAAssOrJmS'
     assert add_node.next is None
 
+
+def test_check_for_seven_values_in_slot_zero(query_processor, capsys):
+    add_cmd = query_processor.read_query('add CbTIAcpmSzJ')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add FrXkdAemjzcN')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add ZxzChw')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add RupdekycY')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add VyJAnSDWRDx')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add DkZWMOtgjZYTJt')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add GN')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add ZxzChw')
+    query_processor.process_query(add_cmd)
+    check_cmd = query_processor.read_query('check 0')
+    query_processor.process_query(check_cmd)
+    check_list = query_processor.elems[0]
+    assert check_list.size == 7
+    captured = capsys.readouterr()
+    assert captured.out == "GN DkZWMOtgjZYTJt VyJAnSDWRDx RupdekycY ZxzChw FrXkdAemjzcN CbTIAcpmSzJ \n"
+
+
+def test_check_for_no_values_in_slot_one(query_processor, capsys):
+    check_cmd = query_processor.read_query('check 1')
+    query_processor.process_query(check_cmd)
+    captured = capsys.readouterr()
+    assert captured.out == "\n"
+
+
+def test_check_for_six_values_in_slot_two(query_processor, capsys):
+    add_cmd = query_processor.read_query('add PoMdzEldVw')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add mrnDJQAKylA')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add mDYecCudUYIFeRg')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add nlqxNQg')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add ynvdyvH')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add eOSKlmbbLjko')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add jRzZEKpSxjsS')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add HBtun')
+    query_processor.process_query(add_cmd)
+    check_cmd = query_processor.read_query('check 2')
+    query_processor.process_query(check_cmd)
+    check_list = query_processor.elems[2]
+    assert check_list.size == 8
+    captured = capsys.readouterr()
+    assert captured.out == "HBtun jRzZEKpSxjsS eOSKlmbbLjko ynvdyvH nlqxNQg mDYecCudUYIFeRg mrnDJQAKylA PoMdzEldVw \n"
+
+
+def test_check_for_three_values_in_slot_three(query_processor, capsys):
+    add_cmd = query_processor.read_query('add psUGGlL')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add TWeYadvt')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add rBNXcO')
+    query_processor.process_query(add_cmd)
+    check_cmd = query_processor.read_query('check 3')
+    query_processor.process_query(check_cmd)
+    check_list = query_processor.elems[3]
+    assert check_list.size == 3
+    captured = capsys.readouterr()
+    assert captured.out == "rBNXcO TWeYadvt psUGGlL \n"
+
+
+def test_check_for_one_value_in_slot_four(query_processor, capsys):
+    add_cmd = query_processor.read_query('add TEJH')
+    query_processor.process_query(add_cmd)
+    check_cmd = query_processor.read_query('check 4')
+    query_processor.process_query(check_cmd)
+    check_list = query_processor.elems[4]
+    assert check_list.size == 1
+    captured = capsys.readouterr()
+    assert captured.out == "TEJH \n"
+
+
+def test_check_command_only(query_processor):
+    check_cmd = query_processor.read_query('check         ')
+    query_processor.process_query(check_cmd)
+    assert query_processor.elems == [None, None, None, None, None]
+
+
+def test_check_invalid_hash_table_index(query_processor):
+    check_cmd = query_processor.read_query('check 10')
+    query_processor.process_query(check_cmd)
+    assert query_processor.elems == [None, None, None, None, None]
+
+
+
+
+
