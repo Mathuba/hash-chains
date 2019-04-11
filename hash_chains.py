@@ -47,7 +47,7 @@ class Query:
         self._valid_cmd = ['add', 'find', 'del', 'check']
         if len(query) == 2:
             self.type = query[0]
-            if self.type in self._valid_cmd and 0 < len(query[1]) <= 15 :
+            if self.type in self._valid_cmd and 0 < len(query[1]) <= 15:
                 if self.type == 'check':
                     self.ind = int(query[1])
                 else:
@@ -81,8 +81,26 @@ class QueryProcessor:
             ans = ((a % self._prime) + self._prime) % self._prime
         return ans % self.bucket_count
 
-    def write_search_result(self, was_found):
-        print('yes' if was_found else 'no')
+    def search_table(self, q_string):
+        search_hash = self._hash_func(q_string)
+        if search_hash:
+            search_list = self.elems[search_hash]
+            if not search_list:
+                return search_list
+            else:
+                found = search_list.find(q_string)
+            return found
+
+    def write_search_result(self, q_string):
+        search_hash = self._hash_func(q_string)
+        if search_hash is not None:
+            search_list = self.elems[search_hash]
+            if not search_list:
+                string_found = None
+            else:
+                string_found = search_list.find(q_string)
+
+            print('yes' if string_found else 'no')
 
     def write_chain(self, chain):
         print(' '.join(chain))
@@ -97,28 +115,11 @@ class QueryProcessor:
             add_list = self.elems[hash_value]
             add_list.prepend(q_string)
 
-    def read_query(self, test_num=None):
-        if test_num is None:
+    def read_query(self, test_cmd=None):
+        if test_cmd is None:
             return Query(input().split())
-
-        if test_num == 1:
-            return Query('add MathubaMzwandil'.split())
-        elif test_num == 2:
-            return Query('find Mathuba'.split())
-        elif test_num == 3:
-            return Query('del Mathuba'.split())
-        elif test_num == 4:
-            return Query('check 4'.split())
-        elif test_num == 5:
-            return Query('add MathubaMzwandile'.split())
-        elif test_num == 6:
-            return Query('add'.split())
-        elif test_num == 7:
-            return Query('add JGxqTHXXed'.split())
-        elif test_num == 8:
-            return Query('add FErhDFUKGkOAWPE'.split())
         else:
-            return Query('illegal commans'.split())
+            return Query(test_cmd.split())
 
     def process_query(self, query):
         if query.type is not None:
@@ -133,7 +134,7 @@ class QueryProcessor:
                     ind = -1
                 if query.s is not None:
                     if query.type == 'find':
-                        self.write_search_result(ind != -1)
+                        self.write_search_result(query.s)
                     elif query.type == 'add':
                         self.add_to_hash_table(query.s)
                     else:
