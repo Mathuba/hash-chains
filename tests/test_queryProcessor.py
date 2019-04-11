@@ -124,21 +124,6 @@ def test_add_to_slot_zero(query_processor):
     assert add_node.next is None
 
 
-def test_create_long_test_list(query_processor):
-    add_cmd_one = query_processor.read_query('add cAAssOrJmS')
-    query_processor.process_query(add_cmd_one)
-    add_cmd_one = query_processor.read_query('add sodomLhz')
-    query_processor.process_query(add_cmd_one)
-    add_cmd_one = query_processor.read_query('add mDYecCudUYIFeRg')
-    query_processor.process_query(add_cmd_one)
-    add_cmd_one = query_processor.read_query('add lcLYbKEYIBUWQw')
-    query_processor.process_query(add_cmd_one)
-    add_cmd_one = query_processor.read_query('add Bcmp')
-    query_processor.process_query(add_cmd_one)
-    add_list = query_processor.elems[4]
-    assert isinstance(add_list, LinkedList)
-
-
 def test_find_first_string_added_to_index_four(query_processor, capsys):
     add_cmd_one = query_processor.read_query('add lcLYbKEYIBUWQw')
     query_processor.process_query(add_cmd_one)
@@ -223,3 +208,80 @@ def test_find_command_with_string_with_special_chars(query_processor, capsys):
     query_processor.process_query(find_cmd)
     captured = capsys.readouterr()
     assert captured.out == ""
+
+
+def test_del_for_string_added_to_slot_zero(query_processor):
+    add_cmd = query_processor.read_query('add VyJAnSDWRDx')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add FErhDFUKGkOAWPE')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add XTua')
+    query_processor.process_query(add_cmd)
+    del_cmd = query_processor.read_query('del VyJAnSDWRDx')
+    query_processor.process_query(del_cmd)
+    add_list = query_processor.elems[0]
+    add_node = add_list.head
+    assert add_node.data == 'XTua'
+    assert add_node.next.data == 'FErhDFUKGkOAWPE'
+
+
+def test_del_for_last_string_added_to_slot_four(query_processor):
+    add_cmd = query_processor.read_query('add Mr')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add Y')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add KJdWfQygOx')
+    query_processor.process_query(add_cmd)
+    del_cmd = query_processor.read_query('del KJdWfQygOx')
+    query_processor.process_query(del_cmd)
+    add_list = query_processor.elems[4]
+    add_node = add_list.head
+    assert add_list.size == 2
+    assert add_node.data == 'Y'
+    assert add_node.next.data == 'Mr'
+
+
+def test_del_for_string_added_to_slot_one(query_processor):
+    add_cmd = query_processor.read_query('add dFDyzlw')
+    query_processor.process_query(add_cmd)
+    del_cmd = query_processor.read_query('del dFDyzlw')
+    query_processor.process_query(del_cmd)
+    add_list = query_processor.elems[1]
+    assert add_list is None
+
+
+def test_del_twice_for_same_string_added_to_slot_four(query_processor):
+    add_cmd = query_processor.read_query('add Mr')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add Y')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add KJdWfQygOx')
+    query_processor.process_query(add_cmd)
+    del_cmd = query_processor.read_query('del KJdWfQygOx')
+    query_processor.process_query(del_cmd)
+    del_cmd = query_processor.read_query('del KJdWfQygOx')
+    query_processor.process_query(del_cmd)
+    add_list = query_processor.elems[4]
+    add_node = add_list.head
+    assert add_list.size == 2
+    assert add_node.data == 'Y'
+    assert add_node.next.data == 'Mr'
+
+
+def test_del_command_only(query_processor):
+    del_cmd = query_processor.read_query('del         ')
+    query_processor.process_query(del_cmd)
+    assert query_processor.elems == [None, None, None, None, None]
+
+
+def test_del_for_invalid_string(query_processor):
+    add_cmd_one = query_processor.read_query('add cAAssOrJmS')
+    query_processor.process_query(add_cmd_one)
+    del_cmd = query_processor.read_query('del cAAssOr)JmS')
+    query_processor.process_query(del_cmd)
+    add_list = query_processor.elems[0]
+    add_node = add_list.head
+    assert add_list.size == 1
+    assert add_node.data == 'cAAssOrJmS'
+    assert add_node.next is None
+

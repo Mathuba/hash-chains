@@ -24,15 +24,22 @@ class LinkedList:
 
     def remove(self, value):
         current = self.head
+        if current and current.data == value:
+            self.head = current.next
+            current = None
+            self.size -= 1
+            return
         previous = None
         while current and current.data != value:
             previous = current
             current = current.next
-        if previous is None:
-            self.head = current.next
-        elif current:
-            previous.next = current.next
-            current.next = None
+
+        if current is None:
+            return
+
+        previous.next = current.next
+        current = None
+        self.size -= 1
 
     def print_list(self):
         current = self.head
@@ -102,6 +109,15 @@ class QueryProcessor:
 
             print('yes' if string_found else 'no')
 
+    def delete_string(self, q_string):
+        hash_value = self._hash_func(q_string)
+        if hash_value:
+            del_list = self.elems[hash_value]
+            if del_list:
+                del_list.remove(q_string)
+            if del_list.size == 0 and self.elems[hash_value] is not None:
+                self.elems[hash_value] = None
+
     def write_chain(self, chain):
         print(' '.join(chain))
 
@@ -137,9 +153,8 @@ class QueryProcessor:
                         self.write_search_result(query.s)
                     elif query.type == 'add':
                         self.add_to_hash_table(query.s)
-                    else:
-                        if ind != -1:
-                            self.elems.pop(ind)
+                    elif query.type == 'del':
+                        self.delete_string(query.s)
 
     def process_queries(self):
         n = int(input())
