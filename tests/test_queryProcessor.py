@@ -53,7 +53,6 @@ def test_no_other_command_accepted(query_processor):
 
 def test_correct_word_length_accepted(query_processor):
     long_string = query_processor.read_query('add MathubaMzwandile')
-    # assert long_string.type is None
     assert long_string.s is None
 
 
@@ -71,7 +70,6 @@ def test_special_characters_return_no_hash_value(query_processor):
 
 
 def test_add_creates_new_list_in_empty_slot(query_processor):
-    # query_processor = deepcopy(query_processor)
     add_cmd = query_processor.read_query('add MathubaMzwandil')
     query_processor.process_query(add_cmd)
     add_list = query_processor.elems[2]
@@ -94,6 +92,21 @@ def test_add_not_created_for_invalid_length(query_processor):
     query_processor.process_query(add_cmd)
     add_list = query_processor.elems[3]
     assert add_list is None
+
+
+def test_add_duplicate_value_not_added(query_processor, capsys):
+    add_cmd = query_processor.read_query('add test')
+    query_processor.process_query(add_cmd)
+    add_cmd = query_processor.read_query('add test')
+    query_processor.process_query(add_cmd)
+    del_cmd = query_processor.read_query('del test')
+    query_processor.process_query(del_cmd)
+    find_cmd = query_processor.read_query('find test')
+    query_processor.process_query(find_cmd)
+    captured = capsys.readouterr()
+    add_list = query_processor.elems[2]
+    assert add_list is None
+    assert captured.out == "no\n"
 
 
 def test_list_prepended_in_existing_slot(query_processor):

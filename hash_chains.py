@@ -111,12 +111,12 @@ class QueryProcessor:
 
     def delete_string(self, q_string):
         hash_value = self._hash_func(q_string)
-        if hash_value:
+        if hash_value is not None:
             del_list = self.elems[hash_value]
             if del_list:
                 del_list.remove(q_string)
-            if del_list.size == 0 and self.elems[hash_value] is not None:
-                self.elems[hash_value] = None
+                if del_list.size == 0 and self.elems[hash_value] is not None:
+                    self.elems[hash_value] = None
 
     def write_chain(self, hash_val):
         chain_list = self.elems[hash_val]
