@@ -1,5 +1,5 @@
 # python3
-
+import sys
 
 class ListNode:
     def __init__(self, data=None, next=None):
@@ -161,13 +161,34 @@ class QueryProcessor:
                     elif query.type == 'del':
                         self.delete_string(query.s)
 
-    def process_queries(self):
-        n = int(input())
-        for i in range(n):
-            self.process_query(self.read_query())
+    def process_queries(self, test_file):
+        if not test_file:
+            n = int(input())
+            for i in range(n):
+                self.process_query(self.read_query())
+        else:
+            n = int(test_file.readline().rstrip())
+            for line in test_file:
+                self.process_query(self.read_query(line))
+
+    
+def main():
+    script = len(sys.argv)
+    filename = sys.argv[1:]
+    if len(sys.argv) == 1:
+        bucket_count = int(input())
+        proc = QueryProcessor(bucket_count)
+        proc.process_queries(filename)
+    else:
+        test_file = filename[0]
+        with open(test_file, 'r') as reader:
+            bucket_count = int(reader.readline().rstrip())
+            proc = QueryProcessor(bucket_count)
+            proc.process_queries(reader)
 
 
 if __name__ == '__main__':
-    bucket_count = int(input())
-    proc = QueryProcessor(bucket_count)
-    proc.process_queries()
+    # bucket_count = int(input())
+    # proc = QueryProcessor(bucket_count)
+    # proc.process_queries()
+    main()
