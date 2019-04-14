@@ -119,11 +119,12 @@ class QueryProcessor:
                     self.elems[hash_value] = None
 
     def write_chain(self, hash_val):
-        chain_list = self.elems[hash_val]
-        if chain_list is not None:
-            chain_list.print_list()
-        else:
-            print()
+        if 0 <= hash_val < self.bucket_count:
+            chain_list = self.elems[hash_val]
+            if chain_list is not None:
+                chain_list.print_list()
+            else:
+                print()
 
     def add_to_hash_table(self, q_string):
         hash_value = self._hash_func(q_string)
