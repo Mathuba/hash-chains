@@ -119,23 +119,25 @@ class QueryProcessor:
                     self.elems[hash_value] = None
 
     def write_chain(self, hash_val):
-        chain_list = self.elems[hash_val]
-        if chain_list is not None:
-            chain_list.print_list()
-        else:
-            print()
+        if 0 <= hash_val < self.bucket_count:
+            chain_list = self.elems[hash_val]
+            if chain_list is not None:
+                chain_list.print_list()
+            else:
+                print()
 
     def add_to_hash_table(self, q_string):
         hash_value = self._hash_func(q_string)
-        if self.elems[hash_value] is None:
-            new_list = LinkedList()
-            new_list.prepend(q_string)
-            self.elems[hash_value] = new_list
-            return
-        lst_exists = self.elems[hash_value]
-        if lst_exists.find(q_string) is None:
-            lst_exists.prepend(q_string)
-            self.elems[hash_value] = lst_exists
+        if hash_value is not None:
+            if self.elems[hash_value] is None:
+                new_list = LinkedList()
+                new_list.prepend(q_string)
+                self.elems[hash_value] = new_list
+                return
+            lst_exists = self.elems[hash_value]
+            if lst_exists.find(q_string) is None:
+                lst_exists.prepend(q_string)
+                self.elems[hash_value] = lst_exists
 
     def read_query(self, test_cmd=None):
         if test_cmd is None:
