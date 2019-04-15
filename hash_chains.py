@@ -151,10 +151,6 @@ class QueryProcessor:
                 if 0 <= query.ind <= self.bucket_count:
                     self.write_chain(query.ind)
             else:
-                try:
-                    ind = self.elems.index(query.s)
-                except ValueError:
-                    ind = -1
                 if query.s is not None:
                     if query.type == 'find':
                         self.write_search_result(query.s)

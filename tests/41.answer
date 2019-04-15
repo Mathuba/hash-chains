@@ -1,0 +1,43 @@
+
+         1978939 function calls in 1.386 seconds
+
+   Ordered by: internal time
+
+   ncalls  tottime  percall  cumtime  percall filename:lineno(function)
+    99999    0.575    0.000    0.631    0.000 hash_chains.py:80(_hash_func)
+    89023    0.130    0.000    0.161    0.000 hash_chains.py:15(prepend)
+    99999    0.129    0.000    0.963    0.000 hash_chains.py:129(add_to_hash_table)
+   100000    0.111    0.000    0.140    0.000 hash_chains.py:54(__init__)
+        1    0.079    0.079    1.339    1.339 hash_chains.py:162(process_queries)
+   100000    0.063    0.000    0.234    0.000 hash_chains.py:142(read_query)
+   100000    0.063    0.000    1.026    0.000 hash_chains.py:148(process_query)
+   800547    0.056    0.000    0.056    0.000 {built-in method builtins.ord}
+        1    0.046    0.046    1.386    1.386 hash_chains.py:2(<module>)
+    89023    0.031    0.000    0.031    0.000 hash_chains.py:5(__init__)
+   100000    0.030    0.000    0.030    0.000 {method 'split' of 'str' objects}
+   300001    0.029    0.000    0.029    0.000 {built-in method builtins.len}
+    41102    0.027    0.000    0.027    0.000 hash_chains.py:19(find)
+    58897    0.015    0.000    0.015    0.000 hash_chains.py:11(__init__)
+        1    0.000    0.000    0.000    0.000 hash_chains.py:76(__init__)
+      161    0.000    0.000    0.000    0.000 {built-in method _codecs.utf_8_decode}
+      161    0.000    0.000    0.001    0.000 codecs.py:318(decode)
+        4    0.000    0.000    0.000    0.000 {built-in method builtins.__build_class__}
+        1    0.000    0.000    0.000    0.000 {built-in method io.open}
+        1    0.000    0.000    1.339    1.339 hash_chains.py:173(main)
+        2    0.000    0.000    0.000    0.000 {method 'readline' of '_io.TextIOWrapper' objects}
+        1    0.000    0.000    0.000    0.000 {built-in method builtins.print}
+        1    0.000    0.000    0.000    0.000 hash_chains.py:121(write_chain)
+        1    0.000    0.000    0.000    0.000 _bootlocale.py:23(getpreferredencoding)
+        1    0.000    0.000    0.000    0.000 {built-in method _locale.nl_langinfo}
+        1    0.000    0.000    1.386    1.386 {built-in method builtins.exec}
+        1    0.000    0.000    0.000    0.000 codecs.py:308(__init__)
+        1    0.000    0.000    0.000    0.000 hash_chains.py:72(QueryProcessor)
+        1    0.000    0.000    0.000    0.000 hash_chains.py:10(LinkedList)
+        1    0.000    0.000    0.000    0.000 hash_chains.py:4(ListNode)
+        1    0.000    0.000    0.000    0.000 hash_chains.py:52(Query)
+        1    0.000    0.000    0.000    0.000 codecs.py:259(__init__)
+        2    0.000    0.000    0.000    0.000 {method 'rstrip' of 'str' objects}
+        1    0.000    0.000    0.000    0.000 {method 'disable' of '_lsprof.Profiler' objects}
+        1    0.000    0.000    0.000    0.000 codecs.py:330(getstate)
+
+
